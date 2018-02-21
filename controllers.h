@@ -2,16 +2,19 @@
 #define CONTROLLERS_H
 
 #include <models.h>
+#include <QtSql>
 
-class UserAdmin()
+class UserAdmin
 {
 private:
     User current_user;
+    QSqlDatabase sdb;
 
 public:
-    UserAdmin(User);
+    UserAdmin();
     ~UserAdmin();
 
+    bool authorize_user(QString, QString);
     bool create_user();
     bool remove_user();
     bool set_as_admin(User);

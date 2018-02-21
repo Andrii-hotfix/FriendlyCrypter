@@ -1,5 +1,6 @@
-#include "friendlylogin.h"
+#include "views.h"
 #include "ui_friendlylogin.h"
+#include <QMessageBox>
 
 FriendlyLogin::FriendlyLogin(QWidget *parent) :
     QDialog(parent),
@@ -11,4 +12,14 @@ FriendlyLogin::FriendlyLogin(QWidget *parent) :
 FriendlyLogin::~FriendlyLogin()
 {
     delete ui;
+}
+
+QString FriendlyLogin::get_pwd_input()
+{
+    return ui->PwdLEdit->text();
+}
+
+QString FriendlyLogin::get_uname_input()
+{
+    return ui->UnameLEdit->text();
 }

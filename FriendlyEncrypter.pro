@@ -5,11 +5,14 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = FriendlyEncrypter
 TEMPLATE = app
+
+CONFIG += console
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -25,10 +28,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        friendlymain.cpp
+        friendlymain.cpp \
+    user.cpp \
+    file.cpp \
+    useradmin.cpp \
+    friendlylogin.cpp
 
 HEADERS += \
-        friendlymain.h
+    models.h \
+    views.h \
+    controllers.h \
+    views.h
 
 FORMS += \
-        friendlymain.ui
+        friendlymain.ui \
+    friendlylogin.ui

@@ -8,7 +8,7 @@ class User
 private:
     QString name;
     unsigned long pwd_size;
-    unsigned long uid;
+    unsigned long long uid;
     bool active;
     bool pwd_restricted;
     bool admin;
@@ -18,7 +18,7 @@ public:
     ~User();
 
     QString get_name();
-    unsigned long get_uid();
+    unsigned long long get_uid();
     bool is_active();
     bool is_admin();
     bool is_pwd_restricted();
@@ -42,7 +42,7 @@ public:
     File(unsigned long, QString, User);
     ~File();
 
-    QString get_file_user();
+    unsigned long get_fid();
     QString get_path();
     User get_user();
 };
