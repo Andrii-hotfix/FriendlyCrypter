@@ -1,7 +1,6 @@
 #include "controllers.h"
 #include <QMessageBox>
 #include <QSqlQuery>
-//#include <QCryptographicHash>
 #include "cryptographic.h"
 #include <QDebug>
 

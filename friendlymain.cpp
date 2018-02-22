@@ -32,23 +32,6 @@ void FriendlyMain::open_login()
         );
     }
     else if (initial_login.result() == QDialog::Rejected) {
-//        CryptographicHash alg(QCryptographicHash::Sha512);
-//        QString salt = alg.generate_salt();
-//        QString salted_pwd = initial_login.get_pwd_input() + salt;
-//        alg.addData(salted_pwd.toUtf8());
-//        QByteArray hashed_pwd = alg.result();
-//        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-//        db.setDatabaseName("friendly.db");
-//        db.open();
-//        QSqlQuery query;
-//        QString name = initial_login.get_uname_input();
-//        query.prepare("INSERT INTO Users (Name, PwdSize, Pwd, Active, PwdRestricted, Admin, Salt)"
-//                      "VALUES (:name, :size, :pwd, 1, 0, 1, :salt)");
-//        query.bindValue(":name", name);
-//        query.bindValue(":size", initial_login.get_pwd_input().size());
-//        query.bindValue(":pwd", hashed_pwd);
-//        query.bindValue(":salt", salt);
-//        query.exec();
         close();
     }
 }
