@@ -5,6 +5,9 @@
 #include <QDialog>
 #include "controllers.h"
 
+#define MAINWINDOW_WIDTH 574
+#define MAINWINDOW_HEIGHT 411
+
 namespace Ui {
 class FriendlyMain;
 class FriendlyLogin;

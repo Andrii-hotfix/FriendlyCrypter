@@ -14,7 +14,7 @@ public:
     UserAdmin();
     ~UserAdmin();
 
-    bool authorize_user(QString, QString);
+    bool authentification(QString, QString);
     bool create_user();
     bool remove_user();
     bool set_as_admin(User);
@@ -30,7 +30,6 @@ public:
     bool decrypt_file(QString);
     bool list_files(User);
     bool list_files();
-
 };
 
 #endif // CONTROLLERS_H

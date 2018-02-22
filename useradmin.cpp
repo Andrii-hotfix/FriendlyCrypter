@@ -1,7 +1,8 @@
 #include "controllers.h"
 #include <QMessageBox>
 #include <QSqlQuery>
-#include <QCryptographicHash>
+//#include <QCryptographicHash>
+#include "cryptographic.h"
 #include <QDebug>
 
 UserAdmin::UserAdmin()
@@ -13,20 +14,24 @@ UserAdmin::UserAdmin()
 
 UserAdmin::~UserAdmin() {}
 
-bool UserAdmin::authorize_user(QString name, QString pwd)
+bool UserAdmin::authentification(QString name, QString pwd)
 {
     if (sdb.open()) {
-        QCryptographicHash hash_alg(QCryptographicHash::Sha512);
-        hash_alg.addData(pwd.toUtf8());
-        QByteArray hashed_pwd = hash_alg.result();
         QSqlQuery query;
-
-        query.prepare("SELECT Name, Pwd, Active, rowid FROM Users WHERE Name = :name");
+        query.prepare("SELECT Name, Pwd, Active, Salt, rowid FROM Users WHERE Name = :name");
         query.bindValue(":name", name);
 
         if (query.exec()) {
             QSqlRecord rec = query.record();
+
+            QCryptographicHash hash_alg(QCryptographicHash::Sha512);
+
             while (query.next()) {
+                QString salt = query.value(rec.indexOf("Salt")).toString();
+
+                hash_alg.addData((pwd + salt).toUtf8());
+                QByteArray hashed_pwd = hash_alg.result();
+
                 QString local_name = query.value(rec.indexOf("Name")).toString();
                 if (hashed_pwd == query.value(rec.indexOf("Pwd")).toByteArray())  {
                     current_user = User(

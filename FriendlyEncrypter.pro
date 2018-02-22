@@ -32,13 +32,15 @@ SOURCES += \
     user.cpp \
     file.cpp \
     useradmin.cpp \
-    friendlylogin.cpp
+    friendlylogin.cpp \
+    cryptographic.cpp
 
 HEADERS += \
     models.h \
     views.h \
     controllers.h \
-    views.h
+    views.h \
+    cryptographic.h
 
 FORMS += \
         friendlymain.ui \

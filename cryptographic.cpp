@@ -1,0 +1,17 @@
+#include "cryptographic.h"
+#include <random>
+#include <cstdlib>
+#include <ctime>
+
+CryptographicHash::CryptographicHash(Algorithm method)
+    : QCryptographicHash(method) {}
+
+QString CryptographicHash::generate_salt()
+{
+    srand(time(nullptr));
+    QString salt = "";
+    for (int i = 0; i < SALT_LENGTH; i++) {
+        salt += (rand() % ALPHABET_LENGTH) + FIRST_ALPHA;
+    }
+    return salt;
+}
