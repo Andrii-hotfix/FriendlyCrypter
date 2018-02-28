@@ -2,6 +2,7 @@
 #define MODELS_H
 
 #include <QString>
+#include <QSqlTableModel>
 
 class User
 {

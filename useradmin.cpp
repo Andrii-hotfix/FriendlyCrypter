@@ -4,6 +4,8 @@
 #include "cryptographic.h"
 #include <QDebug>
 
+#include <QTableView>
+
 UserAdmin::UserAdmin()
     : current_user("", 0, false)
 {
@@ -46,7 +48,7 @@ bool UserAdmin::authentification(QString name, QString pwd)
                         current_user.set_as_admin();
                     }
 
-                    break;
+                    return true;
                 }
                 else {
                     return false;
@@ -69,4 +71,31 @@ bool UserAdmin::authentification(QString name, QString pwd)
         return false;
     }
 
+}
+
+bool UserAdmin::change_pwd(QString old_pwd, QString new_pwd)
+{
+    if (authentification(current_user.get_name(), old_pwd)) {
+        QSqlQuery query;
+        CryptographicHash hash_alg(QCryptographicHash::Sha512);
+        QString salt = hash_alg.generate_salt();
+        hash_alg.addData((new_pwd + salt).toUtf8());
+        query.prepare("UPDATE Users SET Pwd = (:pwd), Salt = (:salt)"
+                      "WHERE rowid = :rowid");
+        query.bindValue(":pwd", hash_alg.result());
+        query.bindValue(":salt", salt);
+        query.bindValue(":rowid", current_user.get_uid());
+        query.exec();
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+QSqlQueryModel* UserAdmin::query_users()
+{
+    QSqlQueryModel* model = new QSqlQueryModel;
+    model->setQuery("SELECT Name, PwdSize, Active, PwdRestricted, Admin FROM Users");
+    return model;
 }

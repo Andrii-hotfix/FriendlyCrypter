@@ -1,4 +1,5 @@
 #include "views.h"
+#include "controllers.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
