@@ -5,10 +5,10 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QTableView>
+#include <QtConcurrent/QtConcurrent>
 
-FriendlyMain::FriendlyMain(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::FriendlyMain)
+FriendlyMain::FriendlyMain(QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::FriendlyMain)
 {   
     ui->setupUi(this);
     setFixedSize(MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT);
@@ -17,6 +17,11 @@ FriendlyMain::FriendlyMain(QWidget *parent) :
     connect(ui->AdminBtn, SIGNAL(clicked()), this, SLOT(set_AdminPage()));
     connect(ui->AdminConfirm, SIGNAL(clicked()), this, SLOT(pwd_change()));
     connect(ui->manageButton, SIGNAL(clicked()), this, SLOT(open_users_lst()));
+
+    QThread* login_routine = new QThread;
+
+    connect(login_routine, SIGNAL(started()), this, SLOT(open_login()));
+    login_routine->start();
 }
 
 FriendlyMain::~FriendlyMain()
@@ -45,7 +50,7 @@ void FriendlyMain::authentificate()
         initial_login->close();
     }
     else {
-        qDebug() << "not authentificated";
+        initial_login->set_error("incorrect password");
     }
 }
 

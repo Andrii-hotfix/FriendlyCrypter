@@ -4,9 +4,8 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
-FriendlyLogin::FriendlyLogin(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::FriendlyLogin)
+FriendlyLogin::FriendlyLogin(QWidget *parent)
+    : QDialog(parent), failed(false), ui(new Ui::FriendlyLogin)
 {
     ui->setupUi(this);    
 }
@@ -31,3 +30,17 @@ void QDialog::accept()
     setResult(QDialog::Accepted);
     emit accepted();
 }
+
+void FriendlyLogin::set_error(QString err)
+{
+    if (!failed) {
+        QLabel* err_label = new QLabel;
+        err_label->setText(err);
+        err_label->setAlignment(Qt::AlignRight);
+        err_label->setAccessibleName("ErrLbl");
+        ui->LoginVL->addWidget(err_label);
+        failed = true;
+    }
+}
+
+

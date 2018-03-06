@@ -21,9 +21,7 @@ class FriendlyMain : public QMainWindow
 
 public:
     explicit FriendlyMain(QWidget *parent = 0);
-    ~FriendlyMain();
-
-    void open_login();
+    ~FriendlyMain();    
 
     UserAdmin adm;
 
@@ -35,6 +33,7 @@ public slots:
     void pwd_change();
     void open_users_lst();
     void authentificate();
+    void open_login();
 
 private:
     Ui::FriendlyMain *ui;
@@ -54,6 +53,7 @@ public:
 
 private:
     Ui::FriendlyLogin *ui;
+    bool failed;
 };
 
 class UsersList : public QDialog
