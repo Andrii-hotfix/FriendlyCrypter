@@ -70,6 +70,8 @@ public:
 
 private slots:
     void submit();
+    void add_row();
+    void rm_row();
 
 private:
     Ui::UsersList *ui;

@@ -8,6 +8,8 @@ UsersList::UsersList(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->buttonBox->button(QDialogButtonBox::Apply), SIGNAL(clicked()), this, SLOT(submit()));
+    connect(ui->addButton, SIGNAL(clicked()), this, SLOT(add_row()));
+    connect(ui->rmButton, SIGNAL(clicked()), this, SLOT(rm_row()));
 }
 
 UsersList::~UsersList()
@@ -24,10 +26,10 @@ void UsersList::set_model(QSqlTableModel *model)
     ui->UsersListView->hideColumn(2);
     // hide salt column
     ui->UsersListView->hideColumn(5);
-    // set correct geometry
+    // set correct geometry (hack)
     QHeaderView* hHeader = ui->UsersListView->horizontalHeader();
     QHeaderView* vHeader = ui->UsersListView->verticalHeader();
-    setFixedWidth(hHeader->length() + vHeader->width() + 18);
+    setFixedWidth(hHeader->length() + vHeader->width() + ui->addButton->width() / 2);
 }
 
 void UsersList::submit()
@@ -40,4 +42,15 @@ void UsersList::submit()
         table->database().rollback();
         qDebug() << "Error commiting database";
     }
+}
+
+void UsersList::add_row()
+{
+    unsigned int row = table->rowCount();
+    table->insertRow(row);
+}
+
+void UsersList::rm_row()
+{
+    qDebug() << ui->UsersListView->selectionModel()->selection().indexes();
 }
