@@ -19,6 +19,7 @@ void UsersList::set_model(QSqlTableModel *model)
 {
     table = model;
     ui->UsersListView->setModel(model);
+    connect(ui->buttonBox->button(QDialogButtonBox::Reset), SIGNAL(clicked()), table, SLOT(revertAll()));
     // hide password column
     ui->UsersListView->hideColumn(2);
     // hide salt column
