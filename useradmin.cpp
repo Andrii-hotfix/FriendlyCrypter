@@ -7,7 +7,7 @@
 #include <QTableView>
 
 UserAdmin::UserAdmin()
-    : current_user("", 0, false), auth_attempts(0)
+    : current_user("", 0, false)
 {
     sdb = QSqlDatabase::addDatabase("QSQLITE");
     sdb.setDatabaseName("friendly.db");
@@ -52,10 +52,6 @@ bool UserAdmin::authentification(QString name, QString pwd)
                 }
             }
         }
-    }
-    auth_attempts++;
-    if (auth_attempts == MAX_AUTH_ATTEMPTS) {
-        exit(0);
     }
     return false;
 }

@@ -8,6 +8,7 @@
 
 #define MAINWINDOW_WIDTH 585
 #define MAINWINDOW_HEIGHT 385
+#define MAX_AUTH_ATTEMPTS 3
 
 namespace Ui {
 class FriendlyMain;
@@ -37,6 +38,7 @@ public slots:
 
 private:
     Ui::FriendlyMain *ui;
+    unsigned int auth_attempts;
 };
 
 class FriendlyLogin : public QDialog

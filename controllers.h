@@ -5,14 +5,11 @@
 #include <QtSql>
 #include <QSqlQueryModel>
 
-#define MAX_AUTH_ATTEMPTS 3
-
 class UserAdmin
 {
 private:
     User current_user;
     QSqlDatabase sdb;
-    unsigned int auth_attempts;
 
 public:
     UserAdmin();

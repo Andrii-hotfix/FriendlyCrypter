@@ -8,7 +8,7 @@
 #include <QtConcurrent/QtConcurrent>
 
 FriendlyMain::FriendlyMain(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::FriendlyMain)
+    : QMainWindow(parent), ui(new Ui::FriendlyMain), auth_attempts(0)
 {   
     ui->setupUi(this);
     setFixedSize(MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT);
@@ -51,6 +51,10 @@ void FriendlyMain::authentificate()
     }
     else {
         initial_login->set_error("incorrect password");
+        auth_attempts++;
+        if (auth_attempts == MAX_AUTH_ATTEMPTS) {
+            close();
+        }
     }
 }
 
