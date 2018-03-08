@@ -2,7 +2,7 @@
 
 #include <QMainWindow>
 #include <QDialog>
-#include <QSqlQueryModel>
+#include <QSqlTableModel>
 #include "controllers.h"
 #include "models.h"
 
@@ -68,7 +68,11 @@ public:
 
     void set_model(QSqlTableModel *model);
 
+private slots:
+    void submit();
+
 private:
     Ui::UsersList *ui;
+    QSqlTableModel* table;
 };
 
