@@ -7,7 +7,7 @@
 #include <QTableView>
 
 UserAdmin::UserAdmin()
-    : current_user("", 0, false)
+    : current_user("", 0, false), auth_attempts(0)
 {
     sdb = QSqlDatabase::addDatabase("QSQLITE");
     sdb.setDatabaseName("friendly.db");
@@ -50,27 +50,14 @@ bool UserAdmin::authentification(QString name, QString pwd)
 
                     return true;
                 }
-                else {
-                    return false;
-                }
-
             }
         }
-        else {
-            QMessageBox box;
-            box.setText("Could not query db");
-            box.exec();
-            return false;
-        }
-
     }
-    else {
-        QMessageBox err_box;
-        err_box.setText("Could not open db");
-        err_box.exec();
-        return false;
+    auth_attempts++;
+    if (auth_attempts == MAX_AUTH_ATTEMPTS) {
+        exit(0);
     }
-
+    return false;
 }
 
 bool UserAdmin::change_pwd(QString old_pwd, QString new_pwd)
@@ -93,9 +80,11 @@ bool UserAdmin::change_pwd(QString old_pwd, QString new_pwd)
     }
 }
 
-QSqlQueryModel* UserAdmin::query_users()
+QSqlTableModel* UserAdmin::query_users()
 {
-    QSqlQueryModel* model = new QSqlQueryModel;
-    model->setQuery("SELECT Name, PwdSize, Active, PwdRestricted, Admin FROM Users");
+    QSqlTableModel* model = new QSqlTableModel;
+    model->setTable("Users");
+    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    model->select();
     return model;
 }

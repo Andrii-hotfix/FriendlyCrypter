@@ -64,7 +64,7 @@ public:
     explicit UsersList(QWidget *parent = 0);
     ~UsersList();
 
-    void set_model(QSqlQueryModel *model);
+    void set_model(QSqlTableModel *model);
 
 private:
     Ui::UsersList *ui;
