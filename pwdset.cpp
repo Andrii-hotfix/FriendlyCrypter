@@ -4,7 +4,8 @@
 PwdSet::PwdSet(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::PwdSet),
-    failed(false)
+    failed(false),
+    errLabel(new QLabel)
 {
     ui->setupUi(this);
     ui->PwdLEdit->setEchoMode(QLineEdit::Password);
@@ -14,6 +15,11 @@ PwdSet::PwdSet(QWidget *parent) :
 PwdSet::~PwdSet()
 {
     delete ui;
+}
+
+QString PwdSet::getNameInput()
+{
+    return ui->NameLEdit->text();
 }
 
 QString PwdSet::getPwdInput()
@@ -29,11 +35,12 @@ QString PwdSet::getConfirmInput()
 void PwdSet::setErr(QString err)
 {
     if (!failed) {
-        QLabel* errLabel = new QLabel;
         errLabel->setText(err);
         errLabel->setAlignment(Qt::AlignRight);
         errLabel->setAccessibleName("ErrLbl");
         ui->EditVL->addWidget(errLabel);
         failed = true;
+    } else {
+        errLabel->setText(err);
     }
 }

@@ -1,9 +1,11 @@
 #include "models.h"
 
-User::User(QString name = "", unsigned long uid = 0, bool admin= false) :
+User::User(QString name, unsigned long uid, bool admin) :
     name(name),
     uid(uid),
-    admin(admin) {}
+    admin(admin),
+    active(true),
+    pwdRestricted(false) {}
 
 User::~User() {}
 

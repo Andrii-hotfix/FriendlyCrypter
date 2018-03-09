@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QDialog>
 #include <QSqlTableModel>
+#include <QLabel>
 #include "controllers.h"
 #include "models.h"
 
@@ -90,6 +91,7 @@ public:
     explicit PwdSet(QWidget *parent = 0);
     ~PwdSet();
 
+    QString getNameInput();
     QString getPwdInput();
     QString getConfirmInput();
     void setErr(QString err);
@@ -97,6 +99,7 @@ public:
 private:
     Ui::PwdSet *ui;
     bool failed;
+    QLabel* errLabel;
 };
 
 #endif // VIEWS_H

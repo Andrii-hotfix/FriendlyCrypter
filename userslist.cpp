@@ -3,6 +3,7 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include "cryptographic.h"
+#include "models.h"
 
 UsersList::UsersList(QWidget *parent) : QDialog(parent),
     ui(new Ui::UsersList),
@@ -57,16 +58,35 @@ void UsersList::addRow()
 void UsersList::addRecord()
 {
     PwdSet* pwdDialog = qobject_cast<PwdSet*>(sender());
-    if (pwdDialog->getPwdInput() == pwdDialog->getConfirmInput()) {
-        pwdDialog->close();
-        CryptographicHash hashAlg(QCryptographicHash::Sha512);
-        QString salt = hashAlg.generateSalt();
-        hashAlg.addData((pwdDialog->getPwdInput() + salt).toUtf8());
-        unsigned int row = table->rowCount();
-        QSqlRecord rec = table->record();
-        rec.setValue("Pwd", hashAlg.result());
-        rec.setValue("Salt", salt);
-        table->insertRecord(row, rec);
+    QString name = pwdDialog->getNameInput();
+    QString pwd = pwdDialog->getPwdInput();
+    QString confirm = pwdDialog->getConfirmInput();
+    if (pwd.isEmpty() || name.isEmpty()) {
+        pwdDialog->setErr("Please fill in all fields");
+    } else if (pwd == confirm) {
+        QSqlQuery nameQuery;
+        nameQuery.prepare("SELECT Name FROM Users WHERE Name = (:name)");
+        nameQuery.bindValue(":name", name);
+        nameQuery.exec();
+        if (!nameQuery.next()) {
+            pwdDialog->close();
+            CryptographicHash hashAlg(QCryptographicHash::Sha512);
+            QString salt = hashAlg.generateSalt();
+            hashAlg.addData((pwd + salt).toUtf8());
+            unsigned int row = table->rowCount();
+            QSqlRecord rec = table->record();
+            User newUser(name);
+            rec.setValue("Pwd", hashAlg.result());
+            rec.setValue("PwdSize", pwd.size());
+            rec.setValue("Salt", salt);
+            rec.setValue("Name", newUser.getName());
+            rec.setValue("Active", newUser.isActive());
+            rec.setValue("PwdRestricted", newUser.isPwdRestricted());
+            rec.setValue("Admin", newUser.isAdmin());
+            table->insertRecord(row, rec);
+        } else {
+            pwdDialog->setErr("This name is allredy in use");
+        }
     } else {
         pwdDialog->setErr("Password was not confirmed");
     }

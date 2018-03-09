@@ -41,20 +41,22 @@ void FriendlyMain::openLogin()
 void FriendlyMain::authentificate()
 {
     FriendlyLogin* initialLogin = qobject_cast<FriendlyLogin*>(sender());
-    bool authentificated = adm.authentification(
-        initialLogin->getUnameInput(),
-        initialLogin->getPwdInput()
-    );
+    QString uname = initialLogin->getUnameInput();
+    QString pwd = initialLogin->getPwdInput();
+    if (uname.isEmpty() || pwd.isEmpty()) {
+        initialLogin->setError("Please fill in all fields");
+    } else {
+        bool authentificated = adm.authentification(uname, pwd);
 
-    if (authentificated) {
-        const QSignalBlocker blocker(initialLogin);
-        initialLogin->close();
-    }
-    else {
-        initialLogin->setError("incorrect password");
-        authAttempts++;
-        if (authAttempts == MAX_AUTH_ATTEMPTS) {
-            close();
+        if (authentificated) {
+            const QSignalBlocker blocker(initialLogin);
+            initialLogin->close();
+        } else {
+            initialLogin->setError("Incorrect password");
+            authAttempts++;
+            if (authAttempts == MAX_AUTH_ATTEMPTS) {
+                close();
+            }
         }
     }
 }
@@ -83,7 +85,9 @@ void FriendlyMain::pwdChange()
 {
     QString newPwd = ui->NewPwdLEdit->text();
     QString confirm = ui->ConfirmLEdit->text();
-    if (newPwd == confirm) {
+    if (newPwd.isEmpty()) {
+        ui->Alerts->setText("Password can not be empty string");
+    } else if (newPwd == confirm) {
         QString oldPwd = ui->OldPwdLEdit->text();
         bool success = adm.changePwd(oldPwd, newPwd);
         if (success) {

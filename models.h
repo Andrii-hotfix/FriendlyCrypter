@@ -15,7 +15,7 @@ private:
     bool admin;
 
 public:
-    User(QString, unsigned long, bool);
+    User(QString name = "Noname", unsigned long uid = 0, bool admin = false);
     ~User();
 
     QString getName();

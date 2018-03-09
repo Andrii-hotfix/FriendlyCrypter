@@ -70,8 +70,7 @@ bool UserAdmin::changePwd(QString old_pwd, QString new_pwd)
         query.bindValue(":rowid", currentUser.getUid());
         query.exec();
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
