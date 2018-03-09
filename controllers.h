@@ -16,8 +16,6 @@ public:
     ~UserAdmin();
 
     bool authentification(QString, QString);
-    bool create_user();
-    bool remove_user();
     bool set_as_admin(User);
     bool set_as_user(User);
     bool restrict_pwd(User);
@@ -31,7 +29,7 @@ public:
     bool list_files(User);
     bool list_files();
     bool change_pwd(QString, QString);
-    QSqlTableModel *query_users();
+    QSqlTableModel* query_users();
 };
 
 #endif // CONTROLLERS_H

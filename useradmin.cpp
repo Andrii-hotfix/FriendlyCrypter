@@ -25,7 +25,7 @@ bool UserAdmin::authentification(QString name, QString pwd)
         if (query.exec()) {
             QSqlRecord rec = query.record();
 
-            QCryptographicHash hash_alg(QCryptographicHash::Sha512);
+            CryptographicHash hash_alg(QCryptographicHash::Sha512);
 
             while (query.next()) {
                 QString salt = query.value(rec.indexOf("Salt")).toString();

@@ -1,3 +1,4 @@
+#ifndef VIEWS_H
 #define VIEWS_H
 
 #include <QMainWindow>
@@ -14,6 +15,7 @@ namespace Ui {
 class FriendlyMain;
 class FriendlyLogin;
 class UsersList;
+class PwdSet;
 }
 
 class FriendlyMain : public QMainWindow
@@ -67,14 +69,36 @@ public:
     ~UsersList();
 
     void set_model(QSqlTableModel *model);
+    void open_pwd_dialog();
 
 private slots:
     void submit();
+    void addRecord();
     void add_row();
     void rm_row();
+    void set_pwd();
 
 private:
     Ui::UsersList *ui;
     QSqlTableModel* table;
 };
+
+class PwdSet : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit PwdSet(QWidget *parent = 0);
+    ~PwdSet();
+
+    QString get_pwd_input();
+    QString get_confirm_input();
+    void setErr(QString err);
+
+private:
+    Ui::PwdSet *ui;
+    bool failed;
+};
+
+#endif // VIEWS_H
 

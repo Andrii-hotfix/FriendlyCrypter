@@ -34,7 +34,8 @@ SOURCES += \
     friendlylogin.cpp \
     cryptographic.cpp \
     userslist.cpp \
-    useradmin.cpp
+    useradmin.cpp \
+    pwdset.cpp
 
 HEADERS += \
     models.h \
@@ -46,4 +47,5 @@ HEADERS += \
 FORMS += \
         friendlymain.ui \
     friendlylogin.ui \
-    userslist.ui
+    userslist.ui \
+    pwdset.ui

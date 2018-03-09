@@ -5,7 +5,6 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QTableView>
-#include <QtConcurrent/QtConcurrent>
 
 FriendlyMain::FriendlyMain(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::FriendlyMain), auth_attempts(0)
@@ -18,10 +17,10 @@ FriendlyMain::FriendlyMain(QWidget *parent)
     connect(ui->AdminConfirm, SIGNAL(clicked()), this, SLOT(pwd_change()));
     connect(ui->manageButton, SIGNAL(clicked()), this, SLOT(open_users_lst()));
 
-    QThread* login_routine = new QThread;
+    QThread* loginRoutine = new QThread;
 
-    connect(login_routine, SIGNAL(started()), this, SLOT(open_login()));
-    login_routine->start();
+    connect(loginRoutine, SIGNAL(started()), this, SLOT(open_login()));
+    loginRoutine->start();
 }
 
 FriendlyMain::~FriendlyMain()
@@ -31,26 +30,26 @@ FriendlyMain::~FriendlyMain()
 
 void FriendlyMain::open_login()
 {
-    FriendlyLogin initial_login(this);
-    connect(&initial_login, SIGNAL(accepted()), this, SLOT(authentificate()));
-    connect(&initial_login, SIGNAL(rejected()), this, SLOT(close()));
-    initial_login.exec();
+    FriendlyLogin* initialLogin = new FriendlyLogin(this);
+    connect(initialLogin, SIGNAL(accepted()), this, SLOT(authentificate()));
+    connect(initialLogin, SIGNAL(rejected()), this, SLOT(close()));
+    initialLogin->exec();
 }
 
 void FriendlyMain::authentificate()
 {
-    FriendlyLogin* initial_login = qobject_cast<FriendlyLogin*>(sender());
+    FriendlyLogin* initialLogin = qobject_cast<FriendlyLogin*>(sender());
     bool authentificated = adm.authentification(
-        initial_login->get_uname_input(),
-        initial_login->get_pwd_input()
+        initialLogin->get_uname_input(),
+        initialLogin->get_pwd_input()
     );
 
     if (authentificated) {
-        const QSignalBlocker blocker(initial_login);
-        initial_login->close();
+        const QSignalBlocker blocker(initialLogin);
+        initialLogin->close();
     }
     else {
-        initial_login->set_error("incorrect password");
+        initialLogin->set_error("incorrect password");
         auth_attempts++;
         if (auth_attempts == MAX_AUTH_ATTEMPTS) {
             close();
@@ -80,11 +79,11 @@ void FriendlyMain::set_CheckSumPage()
 
 void FriendlyMain::pwd_change()
 {
-    QString new_pwd = ui->NewPwdLEdit->text();
+    QString newPwd = ui->NewPwdLEdit->text();
     QString confirm = ui->ConfirmLEdit->text();
-    if (new_pwd == confirm) {
-        QString old_pwd = ui->OldPwdLEdit->text();
-        bool success = adm.change_pwd(old_pwd, new_pwd);
+    if (newPwd == confirm) {
+        QString oldPwd = ui->OldPwdLEdit->text();
+        bool success = adm.change_pwd(oldPwd, newPwd);
         if (success) {
             ui->Alerts->setText("Successfully changed password!");
             ui->OldPwdLEdit->clear();
@@ -105,7 +104,6 @@ void FriendlyMain::pwd_change()
 void FriendlyMain::open_users_lst()
 {
     UsersList u_list;
-    QTableView* users_view = new QTableView;
     u_list.set_model(adm.query_users());
     u_list.exec();
 }
