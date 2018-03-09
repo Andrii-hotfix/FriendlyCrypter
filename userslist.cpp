@@ -4,13 +4,14 @@
 #include <QPushButton>
 #include "cryptographic.h"
 
-UsersList::UsersList(QWidget *parent) :
-    QDialog(parent), ui(new Ui::UsersList), table(nullptr)
+UsersList::UsersList(QWidget *parent) : QDialog(parent),
+    ui(new Ui::UsersList),
+    table(nullptr)
 {
     ui->setupUi(this);
     connect(ui->buttonBox->button(QDialogButtonBox::Apply), SIGNAL(clicked()), this, SLOT(submit()));
-    connect(ui->addButton, SIGNAL(clicked()), this, SLOT(add_row()));
-    connect(ui->rmButton, SIGNAL(clicked()), this, SLOT(rm_row()));
+    connect(ui->addButton, SIGNAL(clicked()), this, SLOT(addRow()));
+    connect(ui->rmButton, SIGNAL(clicked()), this, SLOT(rmRow()));
 }
 
 UsersList::~UsersList()
@@ -18,7 +19,7 @@ UsersList::~UsersList()
     delete ui;
 }
 
-void UsersList::set_model(QSqlTableModel *model)
+void UsersList::setModel(QSqlTableModel *model)
 {
     table = model;
     ui->UsersListView->setModel(model);
@@ -46,7 +47,7 @@ void UsersList::submit()
     }
 }
 
-void UsersList::add_row()
+void UsersList::addRow()
 {
     PwdSet* pwdDialog = new PwdSet(this);
     connect(pwdDialog, SIGNAL(accepted()), this, SLOT(addRecord()));
@@ -56,22 +57,22 @@ void UsersList::add_row()
 void UsersList::addRecord()
 {
     PwdSet* pwdDialog = qobject_cast<PwdSet*>(sender());
-    if (pwdDialog->get_pwd_input() == pwdDialog->get_confirm_input()) {
+    if (pwdDialog->getPwdInput() == pwdDialog->getConfirmInput()) {
         pwdDialog->close();
         CryptographicHash hashAlg(QCryptographicHash::Sha512);
-        QString salt = hashAlg.generate_salt();
-        hashAlg.addData((pwdDialog->get_pwd_input() + salt).toUtf8());
+        QString salt = hashAlg.generateSalt();
+        hashAlg.addData((pwdDialog->getPwdInput() + salt).toUtf8());
         unsigned int row = table->rowCount();
         QSqlRecord rec = table->record();
         rec.setValue("Pwd", hashAlg.result());
         rec.setValue("Salt", salt);
         table->insertRecord(row, rec);
     } else {
-        pwdDialog->setErr("Password wa not confirmed");
+        pwdDialog->setErr("Password was not confirmed");
     }
 }
 
-void UsersList::rm_row()
+void UsersList::rmRow()
 {
     if (ui->UsersListView->selectionModel()->hasSelection()) {
         QModelIndexList selection = ui->UsersListView->selectionModel()->selectedRows();
@@ -79,12 +80,4 @@ void UsersList::rm_row()
             table->removeRows(selected.row(), 1);
         }
     }
-}
-
-void UsersList::set_pwd()
-{
-//    PwdSet* dialog = qobject_cast<PwdSet*>(sender());
-//    if (dialog->get_pwd_input() == dialog->get_confirm_input()) {
-//        ui->UsersListView
-//    }
 }

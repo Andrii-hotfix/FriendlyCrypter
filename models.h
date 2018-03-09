@@ -8,44 +8,44 @@ class User
 {
 private:
     QString name;
-    unsigned long pwd_size;
+    unsigned long pwdSize;
     unsigned long long uid;
     bool active;
-    bool pwd_restricted;
+    bool pwdRestricted;
     bool admin;
 
 public:
     User(QString, unsigned long, bool);
     ~User();
 
-    QString get_name();
-    unsigned long long get_uid();
-    bool is_active();
-    bool is_admin();
-    bool is_pwd_restricted();
+    QString getName();
+    unsigned long long getUid();
+    bool isActive();
+    bool isAdmin();
+    bool isPwdRestricted();
 
-    void restrict_pwd();
-    void unrestrict_pwd();
+    void restrictPwd();
+    void unrestrictPwd();
     void activate();
     void deactivate();
-    void set_as_admin();
-    void set_as_user();
+    void setAsAdmin();
+    void setAsUser();
 };
 
 class File
 {
 private:
     QString path;
-    User file_user;
+    User fileUser;
     unsigned long fid;
 
 public:
     File(unsigned long, QString, User);
     ~File();
 
-    unsigned long get_fid();
-    QString get_path();
-    User get_user();
+    unsigned long getFid();
+    QString getPath();
+    User getUser();
 };
 
 #endif // MODELS_H

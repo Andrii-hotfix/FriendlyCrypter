@@ -3,10 +3,10 @@
 #include <cstdlib>
 #include <ctime>
 
-CryptographicHash::CryptographicHash(Algorithm method)
-    : QCryptographicHash(method) {}
+CryptographicHash::CryptographicHash(Algorithm method) :
+    QCryptographicHash(method) {}
 
-QString CryptographicHash::generate_salt()
+QString CryptographicHash::generateSalt()
 {
     srand(time(nullptr));
     QString salt = "";

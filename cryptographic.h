@@ -16,7 +16,7 @@ class CryptographicHash : public QCryptographicHash
 public:
     CryptographicHash(Algorithm);
 
-    QString generate_salt();
+    QString generateSalt();
 };
 
 #endif // CRYPTOGRAPHIC_H

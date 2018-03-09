@@ -87,7 +87,7 @@
      <item row="0" column="0">
       <widget class="QStackedWidget" name="PagesStack">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="Home">
         <widget class="QLabel" name="Welcome">
@@ -134,7 +134,7 @@
             <height>329</height>
            </rect>
           </property>
-          <widget class="QWidget" name="">
+          <widget class="QWidget" name="layoutWidget">
            <property name="geometry">
             <rect>
              <x>11</x>
@@ -315,5 +315,22 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>QuitBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>FriendlyMain</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>73</x>
+     <y>342</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>163</x>
+     <y>378</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

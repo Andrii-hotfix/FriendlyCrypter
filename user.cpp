@@ -1,43 +1,45 @@
 #include "models.h"
 
-User::User(QString name = "", unsigned long uid = 0, bool admin= false)
-    : name(name), uid(uid), admin(admin) {}
+User::User(QString name = "", unsigned long uid = 0, bool admin= false) :
+    name(name),
+    uid(uid),
+    admin(admin) {}
 
 User::~User() {}
 
-QString User::get_name()
+QString User::getName()
 {
     return name;
 }
 
-unsigned long long User::get_uid()
+unsigned long long User::getUid()
 {
     return uid;
 }
 
-bool User::is_active()
+bool User::isActive()
 {
     return active;
 }
 
-bool User::is_admin()
+bool User::isAdmin()
 {
     return admin;
 }
 
-bool User::is_pwd_restricted()
+bool User::isPwdRestricted()
 {
-    return pwd_restricted;
+    return pwdRestricted;
 }
 
-void User::restrict_pwd()
+void User::restrictPwd()
 {
-    pwd_restricted = true;
+    pwdRestricted = true;
 }
 
-void User::unrestrict_pwd()
+void User::unrestrictPwd()
 {
-    pwd_restricted = false;
+    pwdRestricted = false;
 }
 
 void User::activate()
@@ -50,12 +52,12 @@ void User::deactivate()
     active = false;
 }
 
-void User::set_as_admin()
+void User::setAsAdmin()
 {
     admin = true;
 }
 
-void User::set_as_user()
+void User::setAsUser()
 {
     admin = false;
 }

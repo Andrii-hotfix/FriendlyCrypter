@@ -8,7 +8,7 @@
 class UserAdmin
 {
 private:
-    User current_user;
+    User currentUser;
     QSqlDatabase sdb;
 
 public:
@@ -16,20 +16,20 @@ public:
     ~UserAdmin();
 
     bool authentification(QString, QString);
-    bool set_as_admin(User);
-    bool set_as_user(User);
-    bool restrict_pwd(User);
-    bool unrestrict_pwd(User);
+    bool setAsAdmin(User);
+    bool setAsUser(User);
+    bool restrictPwd(User);
+    bool unrestrictPwd(User);
     bool activate(User);
     bool deactivate(User);    
-    bool add_file(QString);
-    bool delete_file(QString);
-    bool encrypt_file(QString);
-    bool decrypt_file(QString);
-    bool list_files(User);
-    bool list_files();
-    bool change_pwd(QString, QString);
-    QSqlTableModel* query_users();
+    bool addFile(QString);
+    bool deleteFile(QString);
+    bool encryptFile(QString);
+    bool decryptFile(QString);
+    bool listFiles(User);
+    bool listFiles();
+    bool changePwd(QString, QString);
+    QSqlTableModel* queryUsers();
 };
 
 #endif // CONTROLLERS_H

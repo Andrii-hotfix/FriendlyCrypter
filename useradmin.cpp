@@ -6,8 +6,8 @@
 
 #include <QTableView>
 
-UserAdmin::UserAdmin()
-    : current_user("", 0, false)
+UserAdmin::UserAdmin() :
+    currentUser("", 0, false)
 {
     sdb = QSqlDatabase::addDatabase("QSQLITE");
     sdb.setDatabaseName("friendly.db");
@@ -25,27 +25,27 @@ bool UserAdmin::authentification(QString name, QString pwd)
         if (query.exec()) {
             QSqlRecord rec = query.record();
 
-            CryptographicHash hash_alg(QCryptographicHash::Sha512);
+            CryptographicHash hashAlg(QCryptographicHash::Sha512);
 
             while (query.next()) {
                 QString salt = query.value(rec.indexOf("Salt")).toString();
 
-                hash_alg.addData((pwd + salt).toUtf8());
-                QByteArray hashed_pwd = hash_alg.result();
+                hashAlg.addData((pwd + salt).toUtf8());
+                QByteArray hashedPwd = hashAlg.result();
 
                 QString local_name = query.value(rec.indexOf("Name")).toString();
-                if (hashed_pwd == query.value(rec.indexOf("Pwd")).toByteArray())  {
-                    current_user = User(
+                if (hashedPwd == query.value(rec.indexOf("Pwd")).toByteArray())  {
+                    currentUser = User(
                         name,
                         query.value(rec.indexOf("rowid")).toULongLong(),
                         query.value(rec.indexOf("Active")).toBool()
                     );
                     qDebug() << "YEAH";
 
-                    if (current_user.get_name() == "admin") {
+                    if (currentUser.getName() == "admin") {
                         qDebug() << "ADMIN";
-                        qDebug() << current_user.get_uid();
-                        current_user.set_as_admin();
+                        qDebug() << currentUser.getUid();
+                        currentUser.setAsAdmin();
                     }
 
                     return true;
@@ -56,18 +56,18 @@ bool UserAdmin::authentification(QString name, QString pwd)
     return false;
 }
 
-bool UserAdmin::change_pwd(QString old_pwd, QString new_pwd)
+bool UserAdmin::changePwd(QString old_pwd, QString new_pwd)
 {
-    if (authentification(current_user.get_name(), old_pwd)) {
+    if (authentification(currentUser.getName(), old_pwd)) {
         QSqlQuery query;
-        CryptographicHash hash_alg(QCryptographicHash::Sha512);
-        QString salt = hash_alg.generate_salt();
-        hash_alg.addData((new_pwd + salt).toUtf8());
+        CryptographicHash hashAlg(QCryptographicHash::Sha512);
+        QString salt = hashAlg.generateSalt();
+        hashAlg.addData((new_pwd + salt).toUtf8());
         query.prepare("UPDATE Users SET Pwd = (:pwd), Salt = (:salt)"
                       "WHERE rowid = :rowid");
-        query.bindValue(":pwd", hash_alg.result());
+        query.bindValue(":pwd", hashAlg.result());
         query.bindValue(":salt", salt);
-        query.bindValue(":rowid", current_user.get_uid());
+        query.bindValue(":rowid", currentUser.getUid());
         query.exec();
         return true;
     }
@@ -76,7 +76,7 @@ bool UserAdmin::change_pwd(QString old_pwd, QString new_pwd)
     }
 }
 
-QSqlTableModel* UserAdmin::query_users()
+QSqlTableModel* UserAdmin::queryUsers()
 {
     QSqlTableModel* model = new QSqlTableModel;
     model->setTable("Users");

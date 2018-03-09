@@ -6,20 +6,22 @@
 #include <QTimer>
 #include <QTableView>
 
-FriendlyMain::FriendlyMain(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::FriendlyMain), auth_attempts(0)
+FriendlyMain::FriendlyMain(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::FriendlyMain),
+    authAttempts(0)
 {   
     ui->setupUi(this);
     setFixedSize(MAINWINDOW_WIDTH, MAINWINDOW_HEIGHT);
 
-    connect(ui->HomeBtn, SIGNAL(clicked()), this, SLOT(set_HomePage()));
-    connect(ui->AdminBtn, SIGNAL(clicked()), this, SLOT(set_AdminPage()));
-    connect(ui->AdminConfirm, SIGNAL(clicked()), this, SLOT(pwd_change()));
-    connect(ui->manageButton, SIGNAL(clicked()), this, SLOT(open_users_lst()));
+    connect(ui->HomeBtn, SIGNAL(clicked()), this, SLOT(setHomepage()));
+    connect(ui->AdminBtn, SIGNAL(clicked()), this, SLOT(setAdminpage()));
+    connect(ui->AdminConfirm, SIGNAL(clicked()), this, SLOT(pwdChange()));
+    connect(ui->manageButton, SIGNAL(clicked()), this, SLOT(openUsersLst()));
 
     QThread* loginRoutine = new QThread;
 
-    connect(loginRoutine, SIGNAL(started()), this, SLOT(open_login()));
+    connect(loginRoutine, SIGNAL(started()), this, SLOT(openLogin()));
     loginRoutine->start();
 }
 
@@ -28,7 +30,7 @@ FriendlyMain::~FriendlyMain()
     delete ui;
 }
 
-void FriendlyMain::open_login()
+void FriendlyMain::openLogin()
 {
     FriendlyLogin* initialLogin = new FriendlyLogin(this);
     connect(initialLogin, SIGNAL(accepted()), this, SLOT(authentificate()));
@@ -40,8 +42,8 @@ void FriendlyMain::authentificate()
 {
     FriendlyLogin* initialLogin = qobject_cast<FriendlyLogin*>(sender());
     bool authentificated = adm.authentification(
-        initialLogin->get_uname_input(),
-        initialLogin->get_pwd_input()
+        initialLogin->getUnameInput(),
+        initialLogin->getPwdInput()
     );
 
     if (authentificated) {
@@ -49,41 +51,41 @@ void FriendlyMain::authentificate()
         initialLogin->close();
     }
     else {
-        initialLogin->set_error("incorrect password");
-        auth_attempts++;
-        if (auth_attempts == MAX_AUTH_ATTEMPTS) {
+        initialLogin->setError("incorrect password");
+        authAttempts++;
+        if (authAttempts == MAX_AUTH_ATTEMPTS) {
             close();
         }
     }
 }
 
-void FriendlyMain::set_HomePage()
+void FriendlyMain::setHomepage()
 {
     ui->PagesStack->setCurrentIndex(0);
 }
 
-void FriendlyMain::set_AdminPage()
+void FriendlyMain::setAdminpage()
 {
     ui->PagesStack->setCurrentIndex(1);
 }
 
-void FriendlyMain::set_CryptPage()
+void FriendlyMain::setCryptpage()
 {
     ui->PagesStack->setCurrentIndex(2);
 }
 
-void FriendlyMain::set_CheckSumPage()
+void FriendlyMain::setChecksumpage()
 {
     ui->PagesStack->setCurrentIndex(3);
 }
 
-void FriendlyMain::pwd_change()
+void FriendlyMain::pwdChange()
 {
     QString newPwd = ui->NewPwdLEdit->text();
     QString confirm = ui->ConfirmLEdit->text();
     if (newPwd == confirm) {
         QString oldPwd = ui->OldPwdLEdit->text();
-        bool success = adm.change_pwd(oldPwd, newPwd);
+        bool success = adm.changePwd(oldPwd, newPwd);
         if (success) {
             ui->Alerts->setText("Successfully changed password!");
             ui->OldPwdLEdit->clear();
@@ -91,19 +93,17 @@ void FriendlyMain::pwd_change()
             ui->ConfirmLEdit->clear();
             // set display message only for 3 sec.
             QTimer::singleShot(3000, [&](){ ui->Alerts->setText(""); });
-        }
-        else {
+        } else {
             ui->Alerts->setText("Error, coluld not change password");
         }
-    }
-    else {
+    } else {
         ui->Alerts->setText("New password is not confirmed");
     }
 }
 
-void FriendlyMain::open_users_lst()
+void FriendlyMain::openUsersLst()
 {
-    UsersList u_list;
-    u_list.set_model(adm.query_users());
-    u_list.exec();
+    UsersList uList;
+    uList.setModel(adm.queryUsers());
+    uList.exec();
 }

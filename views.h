@@ -29,18 +29,18 @@ public:
     UserAdmin adm;
 
 public slots:
-    void set_HomePage();
-    void set_AdminPage();
-    void set_CryptPage();
-    void set_CheckSumPage();
-    void pwd_change();
-    void open_users_lst();
+    void setHomepage();
+    void setAdminpage();
+    void setCryptpage();
+    void setChecksumpage();
+    void pwdChange();
+    void openUsersLst();
     void authentificate();
-    void open_login();
+    void openLogin();
 
 private:
     Ui::FriendlyMain *ui;
-    unsigned int auth_attempts;
+    unsigned int authAttempts;
 };
 
 class FriendlyLogin : public QDialog
@@ -51,9 +51,9 @@ public:
     explicit FriendlyLogin(QWidget *parent = 0);
     ~FriendlyLogin();
 
-    QString get_uname_input();
-    QString get_pwd_input();
-    void set_error(QString);
+    QString getUnameInput();
+    QString getPwdInput();
+    void setError(QString);
 
 private:
     Ui::FriendlyLogin *ui;
@@ -68,15 +68,14 @@ public:
     explicit UsersList(QWidget *parent = 0);
     ~UsersList();
 
-    void set_model(QSqlTableModel *model);
-    void open_pwd_dialog();
+    void setModel(QSqlTableModel *model);
+    void openPwdDialog();
 
 private slots:
     void submit();
     void addRecord();
-    void add_row();
-    void rm_row();
-    void set_pwd();
+    void addRow();
+    void rmRow();
 
 private:
     Ui::UsersList *ui;
@@ -91,8 +90,8 @@ public:
     explicit PwdSet(QWidget *parent = 0);
     ~PwdSet();
 
-    QString get_pwd_input();
-    QString get_confirm_input();
+    QString getPwdInput();
+    QString getConfirmInput();
     void setErr(QString err);
 
 private:

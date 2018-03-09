@@ -4,8 +4,10 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
-FriendlyLogin::FriendlyLogin(QWidget *parent)
-    : QDialog(parent), failed(false), ui(new Ui::FriendlyLogin)
+FriendlyLogin::FriendlyLogin(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::FriendlyLogin),
+    failed(false)
 {
     ui->setupUi(this);    
 }
@@ -15,12 +17,12 @@ FriendlyLogin::~FriendlyLogin()
     delete ui;
 }
 
-QString FriendlyLogin::get_pwd_input()
+QString FriendlyLogin::getPwdInput()
 {
     return ui->PwdLEdit->text();
 }
 
-QString FriendlyLogin::get_uname_input()
+QString FriendlyLogin::getUnameInput()
 {
     return ui->UnameLEdit->text();
 }
@@ -31,14 +33,14 @@ void QDialog::accept()
     emit accepted();
 }
 
-void FriendlyLogin::set_error(QString err)
+void FriendlyLogin::setError(QString err)
 {
     if (!failed) {
-        QLabel* err_label = new QLabel;
-        err_label->setText(err);
-        err_label->setAlignment(Qt::AlignRight);
-        err_label->setAccessibleName("ErrLbl");
-        ui->LoginVL->addWidget(err_label);
+        QLabel* errLabel = new QLabel;
+        errLabel->setText(err);
+        errLabel->setAlignment(Qt::AlignRight);
+        errLabel->setAccessibleName("ErrLbl");
+        ui->LoginVL->addWidget(errLabel);
         failed = true;
     }
 }

@@ -1,8 +1,10 @@
 #include "views.h"
 #include "ui_pwdset.h"
 
-PwdSet::PwdSet(QWidget *parent)
-    : QDialog(parent), ui(new Ui::PwdSet), failed(false)
+PwdSet::PwdSet(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::PwdSet),
+    failed(false)
 {
     ui->setupUi(this);
     ui->PwdLEdit->setEchoMode(QLineEdit::Password);
@@ -14,12 +16,12 @@ PwdSet::~PwdSet()
     delete ui;
 }
 
-QString PwdSet::get_pwd_input()
+QString PwdSet::getPwdInput()
 {
     return ui->PwdLEdit->text();
 }
 
-QString PwdSet::get_confirm_input()
+QString PwdSet::getConfirmInput()
 {
     return ui->ConfirmLEdit->text();
 }
